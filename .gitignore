@@ -1,8 +1,9 @@
 backend/venv/
 venv/
+
 __pycache__/
 *.pyc
+
 .env
-backend/uploads/
-backend/test.csv
-backend/test_upload.csv
+
+backend/uploads/*
