@@ -974,3 +974,67 @@ input {
     background-color: #000000fb;
     color: white;
 }
+/* Instructions Modal Styles */
+/* .instructions-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 20px;
+}
+
+.instructions-card {
+    background: white;
+    width: 100%;
+    max-width: 800px;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    position: relative;
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.instruction-points {
+    list-style: none;
+    padding-left: 0;
+}
+
+.instruction-points li {
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 0.95rem;
+}
+
+.instruction-points li:last-child {
+    border-bottom: none;
+} */
+
+#instructionsModal .instruction-points li {
+    position: relative;
+    padding-left: 25px;
+}
+
+#instructionsModal .instruction-points li::before {
+    content: "•";
+    color: #000; /* Or your theme color */
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+    font-size: 1.2rem;
+}
+
+#instructionsModal .modal-content {
+    border-radius: 15px; /* Matches your dashboard card style */
+}

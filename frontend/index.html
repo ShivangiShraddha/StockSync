@@ -237,6 +237,12 @@
                                 <i class="bi bi-cloud-arrow-up fs-3 text-muted"></i>
                                 <input type="file" id="csvFile" class="form-control form-control-sm my-2">
                                 <button id="analyzeBtn" class="btn btn-dark btn-sm w-100 fw-bold">Analyze Data</button>
+
+                                <button type="button"
+                                    class="btn btn-link btn-sm text-muted mt-2 text-decoration-none shadow-none"
+                                    data-bs-toggle="modal" data-bs-target="#instructionsModal">
+                                    <i class="bi bi-info-circle me-1"></i>Instructions
+                                </button>
                             </div>
                         </div>
 
@@ -428,6 +434,33 @@
             </a>
         </div>
     </div>
+    <div class="modal fade" id="instructionsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header border-0 pb-0">
+                    <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <h5 class="fw-bold mb-4">Upload Instructions</h5>
+                    <ul class="instruction-points"
+                        style="list-style: none; padding: 0; font-size: 0.95rem; line-height: 1.8; color: #444;">
+                        <li class="mb-3"><strong>Format:</strong> Save your file as a <b>.CSV</b>.</li>
+                        <li class="mb-3"><strong>Columns:</strong> Use exactly 4 columns: <code
+                                class="text-danger">date</code>, <code class="text-danger">product_name</code>, <code
+                                class="text-danger">quantity_sold</code>, and <code
+                                class="text-danger">current_stock</code>.</li>
+                        <li class="mb-3"><strong>Numbers Only:</strong> Avoid text like "kg" or "units" in numeric
+                            columns.</li>
+                        <li class="mb-3"><strong>45-Day Rule:</strong> Every product needs at least <b>45 days</b> of
+                            history for the AI to work.</li>
+                        <li class="mb-3"><strong>No Blanks:</strong> Ensure every row is completely filled.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
     <script src="js/script.js"></script>
 
