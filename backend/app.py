@@ -49,11 +49,9 @@ def upload():
         # ---------- CORE PIPELINE ----------
         demand = forecast_demand(df)
 
-        # ✅ FIX: pass forecast results
         inventory = calculate_inventory(df, demand)
-
-        revenue = calculate_revenue(df,demand)
-        expiry = detect_expiry(df,demand)
+        revenue = calculate_revenue(df, demand)
+        expiry = detect_expiry(df, demand)
 
         # ---------- SAFE CALCULATIONS ----------
         total_revenue = 0
@@ -90,8 +88,8 @@ def upload():
         import traceback
         traceback.print_exc()
         return jsonify({"error": str(e)}), 500
-    
-    
+
+
 @app.route("/download_report", methods=["POST"])
 def download_report():
     try:
@@ -128,16 +126,37 @@ def ask_ai():
 
     data = request.json
 
+    # ✅ ADD THIS BLOCK ONLY (KEY FIX)
+    low_stock_products = {
+        name: details for name, details in analytics_data["inventory_data"].items()
+        if isinstance(details, dict) and details.get("Status") == "LOW_STOCK"
+    }
+
     prompt = f"""
 Business Summary:
 Total Revenue: {analytics_data['total_revenue']}
 Reorders Needed: {analytics_data['reorder_count']}
 Expiry Risks: {analytics_data['expiry_count']}
 
+Low Stock Products:
+{low_stock_products}
+
+Revenue by Product:
+{revenue_products}
+
+Full Inventory Data:
+{analytics_data['inventory_data']}
+
 User Question:
 {data.get('question')}
-"""
 
+Rules:
+- Answer ONLY from given data
+- If asked for top products → sort by revenue
+- If asked for restocking → return PRODUCT NAMES
+- Be precise
+- Do NOT give generic answers
+"""
     try:
         answer = call_llm(
             data.get("provider"),

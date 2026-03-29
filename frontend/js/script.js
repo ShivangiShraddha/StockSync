@@ -463,76 +463,76 @@ function updateDashboard(data) {
         updateDemandChart(demand);
     }
 }
-async function askAI() {
-    const question = document.getElementById('question').value;
-    const apiKey = document.getElementById('apiKey').value;
-    const model = document.getElementById('model_name').value;
-    const provider = document.getElementById('provider').value;
-    const aiBtn = document.getElementById('aiBtn');
-    const responseWrapper = document.getElementById('ai-response-wrapper');
-    const responseDiv = document.getElementById('ai-response');
+// async function askAI() {
+//     const question = document.getElementById('question').value;
+//     const apiKey = document.getElementById('apiKey').value;
+//     const model = document.getElementById('model_name').value;
+//     const provider = document.getElementById('provider').value;
+//     const aiBtn = document.getElementById('aiBtn');
+//     const responseWrapper = document.getElementById('ai-response-wrapper');
+//     const responseDiv = document.getElementById('ai-response');
 
-    if (!question || !apiKey) {
-        alert("Please enter both a question and your API Key.");
-        return;
-    }
+//     if (!question || !apiKey) {
+//         alert("Please enter both a question and your API Key.");
+//         return;
+//     }
 
     
-    const context = `
-        Current Inventory Stats:
-        - Total Predicted Revenue: ${document.getElementById('rev-value').innerText}
-        - Products Needing Reorder: ${document.getElementById('reorder-count').innerText}
-        - Units at Expiry Risk: ${document.getElementById('expiry-count').innerText}
-        - User Question: ${question}
-    `;
+//     const context = `
+//         Current Inventory Stats:
+//         - Total Predicted Revenue: ${document.getElementById('rev-value').innerText}
+//         - Products Needing Reorder: ${document.getElementById('reorder-count').innerText}
+//         - Units at Expiry Risk: ${document.getElementById('expiry-count').innerText}
+//         - User Question: ${question}
+//     `;
 
-    aiBtn.innerText = "Consulting AI...";
-    aiBtn.disabled = true;
-    responseWrapper.classList.remove('d-none');
-    responseDiv.innerText = "Analyzing your inventory trends...";
+//     aiBtn.innerText = "Consulting AI...";
+//     aiBtn.disabled = true;
+//     responseWrapper.classList.remove('d-none');
+//     responseDiv.innerText = "Analyzing your inventory trends...";
 
-    try {
-        // This assumes you have a proxy route in Flask to handle the API call
-        // OR you are calling Groq/OpenAI directly from JS (Careful with API keys in frontend!)
-        const response = await fetch('http://127.0.0.1:5000/ask_ai', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                question: question,
-                context: context,
-                api_key: apiKey,
-                model: model,
-                provider: provider
-            })
-        });
+//     try {
+//         // This assumes you have a proxy route in Flask to handle the API call
+//         // OR you are calling Groq/OpenAI directly from JS (Careful with API keys in frontend!)
+//         const response = await fetch('http://127.0.0.1:5000/ask_ai', {
+//             method: 'POST',
+//             headers: { 'Content-Type': 'application/json' },
+//             body: JSON.stringify({
+//                 question: question,
+//                 context: context,
+//                 api_key: apiKey,
+//                 model: model,
+//                 provider: provider
+//             })
+//         });
 
-        const result = await response.json();
+//         const result = await response.json();
 
-        if (result.answer) {
-            responseDiv.innerHTML = result.answer.replace(/\n/g, '<br>');
-            aiGeneratedText = result.answer;
-        } else {
-            throw new Error(result.error || "Failed to get AI response");
-        }
+//         if (result.answer) {
+//             responseDiv.innerHTML = result.answer.replace(/\n/g, '<br>');
+//             aiGeneratedText = result.answer;
+//         } else {
+//             throw new Error(result.error || "Failed to get AI response");
+//         }
 
-    } catch (error) {
-        responseDiv.innerHTML = `<span class="text-warning">Error: ${error.message}</span>`;
-    } finally {
-        aiBtn.innerText = "Generate AI Insights";
-        aiBtn.disabled = false;
-    }
-}
+//     } catch (error) {
+//         responseDiv.innerHTML = `<span class="text-warning">Error: ${error.message}</span>`;
+//     } finally {
+//         aiBtn.innerText = "Generate AI Insights";
+//         aiBtn.disabled = false;
+//     }
+// }
 
-// Utility to toggle API key visibility
-function togglePass() {
-    const passInput = document.getElementById('apiKey');
-    passInput.type = passInput.type === 'password' ? 'text' : 'password';
-}
-function resetToUpload() {
-    document.getElementById('nav-hub-stage').classList.add('d-none');
-    document.getElementById('upload-stage').classList.remove('d-none');
-    document.getElementById('csvFile').value = '';
-}
+// // Utility to toggle API key visibility
+// function togglePass() {
+//     const passInput = document.getElementById('apiKey');
+//     passInput.type = passInput.type === 'password' ? 'text' : 'password';
+// }
+// function resetToUpload() {
+//     document.getElementById('nav-hub-stage').classList.add('d-none');
+//     document.getElementById('upload-stage').classList.remove('d-none');
+//     document.getElementById('csvFile').value = '';
+// }
 
 
 let revenueChartInstance = null; 
@@ -582,6 +582,91 @@ function renderRevenueChart(revenueData) {
     });
 }
 
+async function askAI() {
+    const question = document.getElementById('question').value;
+    const apiKey = document.getElementById('apiKey').value;
+    const model = document.getElementById('model_name').value;
+    const provider = document.getElementById('provider').value;
+    const aiBtn = document.getElementById('aiBtn');
+    const responseWrapper = document.getElementById('ai-response-wrapper');
+    const responseDiv = document.getElementById('ai-response');
+
+    if (!question || !apiKey) {
+        alert("Please enter both a question and your API Key.");
+        return;
+    }
+
+    const context = `
+        Current Inventory Stats:
+        - Total Predicted Revenue: ${document.getElementById('rev-value').innerText}
+        - Products Needing Reorder: ${document.getElementById('reorder-count').innerText}
+        - Units at Expiry Risk: ${document.getElementById('expiry-count').innerText}
+        - User Question: ${question}
+    `;
+
+    aiBtn.innerText = "Consulting AI...";
+    aiBtn.disabled = true;
+
+    // ✅ FIX: null safety added
+    if (responseWrapper) {
+        responseWrapper.classList.remove('d-none');
+    }
+    if (responseDiv) {
+        responseDiv.innerText = "Analyzing your inventory trends...";
+    }
+
+    try {
+        const response = await fetch('http://127.0.0.1:5000/ask_ai', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                question: question,
+                context: context,
+                api_key: apiKey,
+                model_name: model,
+                provider: provider
+            })
+        });
+
+        // const result = await response.json();
+        const result = await response.json();
+        console.log("AI RESULT:", result);
+
+        // ✅ FIX: null safety added
+        // if (result.answer && responseDiv) {
+        //     responseDiv.innerHTML = result.answer.replace(/\n/g, '<br>');
+        //     aiGeneratedText = result.answer;
+        // } 
+        console.log("AI RESULT:", result);
+
+const output =
+    result.answer?.trim() ||
+    result.error ||
+    "⚠️ No response from AI";
+
+const responseDiv = document.getElementById('ai-response');
+
+if (responseDiv) {
+    responseDiv.style.display = "block";   // 🔥 ensure visible
+    responseDiv.innerHTML = output.replace(/\n/g, '<br>');
+} else {
+    console.error("❌ ai-response div NOT FOUND in HTML");
+}
+        // else {
+        //     throw new Error(result.error || "Failed to get AI response");
+        // }
+
+    } catch (error) {
+        // ✅ FIX: null safety added
+        if (responseDiv) {
+            responseDiv.innerHTML = `<span class="text-warning">Error: ${error.message}</span>`;
+        }
+    } finally {
+        aiBtn.innerText = "Generate AI Insights";
+        aiBtn.disabled = false;
+    }
+}
+
 async function downloadReport() {
 
     if (!globalStoredData) {
@@ -591,6 +676,7 @@ async function downloadReport() {
 
     try {
         const response = await fetch("http://127.0.0.1:5000/download_report", {
+        
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
