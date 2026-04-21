@@ -226,7 +226,6 @@ section {
 .feature-text-container li,
 .feature-text-container li strong {
     color: #f0f0f0 !important;
-    /* Light gray/white for contrast */
 }
 
 .feature-tab-gusto {
@@ -247,20 +246,17 @@ section {
     font-weight: 700;
 }
 
-/* --- Tab Hover Effect --- */
 .feature-tab-gusto {
     background: transparent;
     border: 2px solid transparent;
     padding: 10px 25px;
     border-radius: 50px;
-    /* Gives it that pill shape */
     font-weight: 600;
     transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     color: #444;
     
 }
 
-/* The Hover State */
 .feature-tab-gusto:hover:not(.active) {
     background-color: #960707 !important;
     color: white !important;
@@ -269,11 +265,8 @@ section {
 }
 
 .feature-tab-gusto:hover {
-    /* Translucent Coral Background */
     background-color: rgba(255, 127, 112, 0.15);
     color: #ff7f70;
-
-    /* The "Glow" shadow */
     box-shadow: 0 0 20px rgba(255, 127, 112, 0.4);
     transform: translateY(-2px);
 }
@@ -582,7 +575,7 @@ section {
     transform: translateY(-5px);
 }
 
-/* Stat Value Neon Effect */
+/* Stat Value */
 .stat-value {
     color: var(--gusto-green) !important;
     font-weight: 800;
@@ -646,7 +639,6 @@ section {
     transform: translateY(0);
 }
 
-/* This ensures the lists are perfectly aligned with the headings above them */
 .footer-links-gusto {
     padding-left: 0 !important;
     margin-left: 0 !important;
@@ -693,7 +685,7 @@ section {
     color: #ffffff !important;
 }
 
-/* AI Bubble Button */
+/* AI Button */
 .btn-ai-bubble {
     border-radius: 30px !important;
     background: linear-gradient(to right, #960707, #d32f2f);
@@ -714,7 +706,7 @@ section {
     border-left: 6px solid #960707;
 }
 
-/* Rounded Inputs */
+/* Inputs */
 .bubble-input {
     border-radius: 20px !important;
     padding-left: 20px;
@@ -749,7 +741,7 @@ section {
     border-color: var(--gusto-green) !important;
 }
 
-/* TABLE POLISH */
+/* TABLE */
 .table thead th {
     font-weight: 600;
     font-size: 0.75rem;
@@ -855,12 +847,10 @@ section {
     image-rendering: auto;
 }
 
-/* Ensure the container doesn't squash the canvas */
 .tab-content {
     min-height: 320px;
 }
 
-/* Custom styling for the dark input theme */
 .custom-ai-input {
     background-color: #3e444a !important;
     border: 1px solid #495057 !important;
@@ -868,7 +858,6 @@ section {
     padding: 12px 15px !important;
     border-radius: 6px !important;
     min-height: 48px !important;
-    /* height: auto !important; */
     line-height: 1.5 !important;
     overflow: visible !important;
     font-size: 1rem !important;
@@ -878,7 +867,6 @@ section {
     color: #adb5bd !important;
 }
 
-/* Eye icon button styling */
 .btn-dark-input {
     background-color: #3e444a;
     border: 1px solid #495057;
@@ -889,7 +877,7 @@ section {
     padding: 30px !important;
 }
 
-/* --- 1. Top KPI Row (Compact & Small) --- */
+/* --- 1. Top KPI Row --- */
 #dashboard-view .container>.row:nth-of-type(1) .stat-card {
     min-height: 120px !important;
     padding: 1rem !important;
@@ -909,7 +897,7 @@ section {
     margin-bottom: 0;
 }
 
-/* --- 2. Middle Section (Hub & Charts) --- */
+/* --- 2. Hub & Charts --- */
 #dashboard-view .container>.row:nth-of-type(2) .stat-card {
     min-height: 100px !important;
 }
@@ -920,7 +908,7 @@ section {
     min-height: auto !important;
 }
 
-/* --- 3. AI Business Assistant (Compact Footer) --- */
+/* --- 3. AI Business Assistant --- */
 #dashboard-view .ai-assistant-container,
 #dashboard-view .row:last-of-type .stat-card {
     min-height: auto !important;
@@ -937,7 +925,6 @@ section {
 
 .kpi-card-top {
     min-height: 120px !important;
-    /* height: 140px !important; */
     display: flex !important;
     flex-direction: column !important;
     justify-content: center !important;
@@ -1028,7 +1015,7 @@ input {
 
 #instructionsModal .instruction-points li::before {
     content: "•";
-    color: #000; /* Or your theme color */
+    color: #000;
     font-weight: bold;
     position: absolute;
     left: 0;
@@ -1036,5 +1023,5 @@ input {
 }
 
 #instructionsModal .modal-content {
-    border-radius: 15px; /* Matches your dashboard card style */
+    border-radius: 15px;
 }
