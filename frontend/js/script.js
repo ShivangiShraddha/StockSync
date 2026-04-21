@@ -3,16 +3,12 @@ window.onbeforeunload = function () {
     console.log("🚨 PAGE RELOADING");
 };
 
-/* ==========================================
-   GLOBAL VARIABLES
-   ========================================== */
+/* GLOBAL VARIABLES */
 let chartInstance = null;
 let lastAnalysisResult = null;
 let aiGeneratedText = null;
 
-/* ==========================================
-   VIEW TOGGLING & NAVIGATION
-   ========================================== */
+/* VIEW TOGGLING & NAVIGATION */
 function showSignup() {
     const landing = document.getElementById('landing-wrapper');
     const signup = document.getElementById('signup-view');
@@ -75,9 +71,6 @@ function navToSection(sectionId) {
     }, 100);
 }
 
-/* ==========================================
-   SCROLL REVEAL ANIMATION
-   ========================================== */
 const revealOnScroll = () => {
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -92,14 +85,12 @@ const revealOnScroll = () => {
     });
 };
 
-/* ==========================================
-   INITIALIZATION
-   ========================================== */
+/* INITIALIZATION */
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Initialize Scroll Animations
+    // 1. Initializing Scroll Animations
     revealOnScroll();
 
-    // 2. Dark Mode Toggle Logic (Persistent)
+    // 2. Dark Mode Toggle
     const darkModeToggle = document.getElementById('darkModeToggle');
     if (darkModeToggle) {
         if (localStorage.getItem('theme') === 'dark') {
@@ -141,9 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupTabs(".feature-tab", ".tab-content");
 });
 
-/* ==========================================
-   SIGNUP & FORM LOGIC
-   ========================================== */
+/* SIGNUP & FORM LOGIC */
 function handleSignup(event) {
     event.preventDefault();
     const companyInput = event.target.querySelector('input[placeholder="Company Name"]');
@@ -164,9 +153,7 @@ function handleSignup(event) {
     }, 1000);
 }
 
-/* ==========================================
-   TAB LOGIC
-   ========================================== */
+/* TAB LOGIC */
 function setupTabs(buttonClass, contentClass, imageId = null, imageMap = null) {
     const tabs = document.querySelectorAll(buttonClass);
     tabs.forEach(tab => {
@@ -195,9 +182,7 @@ function setupTabs(buttonClass, contentClass, imageId = null, imageMap = null) {
     });
 }
 
-/* ==========================================
-   ML ANALYSIS & DASHBOARD UPDATE
-   ========================================== */
+/* ML ANALYSIS & DASHBOARD UPDATE */
 
 let globalStoredData = null;
 
@@ -265,19 +250,19 @@ function switchView(type, element) {
 
     const titleElement = document.getElementById('main-title');
 
-    // 1. Handle Navigation UI
+    // 1. Navigation UI
     document.querySelectorAll('.kpi-nav-card')
         .forEach(c => c.classList.remove('active'));
     if (element) element.classList.add('active');
 
-    // 2. Handle Content Visibility
+    // 2. Content Visibility
     document.querySelectorAll('.tab-content')
         .forEach(c => c.classList.add('d-none'));
 
     const targetContent = document.getElementById(`${type}-content`);
     if (targetContent) targetContent.classList.remove('d-none');
 
-    // 3. RENDER DATA BASED ON TAB
+    // 3. Rendering data based on Tab
     if (type === 'sales') {
         if (titleElement) titleElement.innerText = "Product Demand Forecast";
         updateDemandChart(globalStoredData.demand_data);
@@ -292,7 +277,6 @@ function switchView(type, element) {
     }
     else if (type === 'inventory') {
         if (titleElement) titleElement.innerText = "Inventory Stock Levels";
-        // CRITICAL: Ensure we pass the correct data object
         renderInventoryTable(globalStoredData.inventory_data);
     }
 }
@@ -311,7 +295,6 @@ function populateExpiryTable(expiryData) {
     `).join('');
 }
 function renderInventoryTable(invData) {
-    // 1. Target BOTH table bodies
     const summaryBody = document.getElementById('inventory-summary-body');
     const fullAnalysisBody = document.getElementById('inventory-table-body');
 
@@ -334,14 +317,11 @@ function renderInventoryTable(invData) {
             </tr>`;
     }).join('');
 
-    // 3. Update both sections at once!
     if (summaryBody) summaryBody.innerHTML = rowsHtml;
     if (fullAnalysisBody) fullAnalysisBody.innerHTML = rowsHtml;
 }
-/* ==========================================
-   THEME-AWARE CHARTING
-   ========================================== */
 
+/* THEME-AWARE CHARTING */
 
 function updateDemandChart(demandData, isRefresh = false, cached = null) {
     const canvas = document.getElementById('demandChart');
@@ -492,8 +472,6 @@ function updateDashboard(data) {
 //     responseDiv.innerText = "Analyzing your inventory trends...";
 
 //     try {
-//         // This assumes you have a proxy route in Flask to handle the API call
-//         // OR you are calling Groq/OpenAI directly from JS (Careful with API keys in frontend!)
 //         const response = await fetch('http://127.0.0.1:5000/ask_ai', {
 //             method: 'POST',
 //             headers: { 'Content-Type': 'application/json' },
@@ -548,7 +526,6 @@ function renderRevenueChart(revenueData) {
 
     const labels = Object.keys(revenueData);
 
-    // Safely extract the numeric value from the object
     const values = labels.map(key => {
         const entry = revenueData[key];
         return typeof entry === 'object' ? (entry['Predicted Revenue'] || 0) : entry;
@@ -607,7 +584,6 @@ async function askAI() {
     aiBtn.innerText = "Consulting AI...";
     aiBtn.disabled = true;
 
-    // ✅ FIX: null safety added
     if (responseWrapper) {
         responseWrapper.classList.remove('d-none');
     }
@@ -628,15 +604,9 @@ async function askAI() {
             })
         });
 
-        // const result = await response.json();
         const result = await response.json();
         console.log("AI RESULT:", result);
 
-        // ✅ FIX: null safety added
-        // if (result.answer && responseDiv) {
-        //     responseDiv.innerHTML = result.answer.replace(/\n/g, '<br>');
-        //     aiGeneratedText = result.answer;
-        // } 
         console.log("AI RESULT:", result);
 
 const output =
@@ -647,7 +617,7 @@ const output =
 const responseDiv = document.getElementById('ai-response');
 
 if (responseDiv) {
-    responseDiv.style.display = "block";   // 🔥 ensure visible
+    responseDiv.style.display = "block";
     responseDiv.innerHTML = output.replace(/\n/g, '<br>');
 } else {
     console.error("❌ ai-response div NOT FOUND in HTML");
@@ -657,7 +627,6 @@ if (responseDiv) {
         // }
 
     } catch (error) {
-        // ✅ FIX: null safety added
         if (responseDiv) {
             responseDiv.innerHTML = `<span class="text-warning">Error: ${error.message}</span>`;
         }
@@ -687,7 +656,6 @@ async function downloadReport() {
             })
         });
 
-        // ❗ CHECK RESPONSE FIRST (IMPORTANT)
         if (!response.ok) {
             const errorText = await response.text();
             throw new Error(errorText || "Server error");
@@ -695,7 +663,6 @@ async function downloadReport() {
 
         const blob = await response.blob();
 
-        // ❗ VALIDATE FILE
         if (blob.size === 0) {
             throw new Error("Empty PDF received");
         }
@@ -710,7 +677,7 @@ async function downloadReport() {
         a.click();
         a.remove();
 
-        window.URL.revokeObjectURL(url); // cleanup
+        window.URL.revokeObjectURL(url);
 
     } catch (err) {
         console.error("Download error:", err);
